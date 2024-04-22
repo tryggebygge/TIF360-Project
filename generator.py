@@ -5,7 +5,11 @@ class Generator(nn.Module):
         
         self.main = nn.Sequential(
             # input is Z, going into a convolution
-            nn.ConvTranspose2d( input_size, size_feature_map * 8, 4, 1, 0, bias=False),
+            nn.ConvTranspose2d( input_size, size_feature_map * 16, 4, 1, 0, bias=False),
+            nn.BatchNorm2d(size_feature_map * 16),
+            nn.ReLU(True),
+            
+            nn.ConvTranspose2d( size_feature_map * 16, size_feature_map * 8, 4, 1, 0, bias=False),
             nn.BatchNorm2d(size_feature_map * 8),
             nn.ReLU(True),
             # state size. ``(size_feature_map*8) x 4 x 4``
