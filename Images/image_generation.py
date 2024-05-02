@@ -102,14 +102,15 @@ def apply_fading(img_array):
     return np.array(img_faded)  # Convert back to numpy array if needed
 
 
-def apply_combined_effects(img_array, noise_strength=30):
-    # Apply sepia
-    img_sepia = apply_sepia(img_array)
-    # Apply noise
-    img_noisy = apply_noise(img_sepia, strength=noise_strength)
-    # Apply vignette
-    img_combined = apply_vignette(img_noisy)
-    return img_combined
+def apply_combined_effects(img_array, number_of_effects=5):
+    # Apply random effects
+    for _ in range(number_of_effects):
+        # Randomly select an effect from all effects
+        list_of_effects = ['sepia', 'noise', 'vignette', 'damage_line', 'damage_corner', 'fading', 'scratches', 'stains', 'blur']
+        effect_name = random.choice(list_of_effects)
+        effect_function, kwargs = effects[effect_name]
+        img_array = effect_function(img_array, **kwargs)
+    return img_array
 
 
 def process_image(image_path, output_dir, effect_function, effect_name, **kwargs):
@@ -123,7 +124,7 @@ def process_image(image_path, output_dir, effect_function, effect_name, **kwargs
     print(f"Saved {effect_name} image to {output_path}")
 
 
-input_dir = '00000'
+input_dir = '/Users/malteaqvist/Library/CloudStorage/OneDrive-Chalmers/Chalmers Maskin/Aktiva kurser/TIF360 - Advanced machine learning with neural networks/gans-egen/00000'
 output_dir = 'path_to_output_folder'
 effects = {
     "sepia": (apply_sepia, {}),
@@ -135,7 +136,7 @@ effects = {
     "scratches": (apply_scratches, {}),
     "stains": (apply_stains, {}),
     "blur": (apply_blur, {}),
-    "combined_effects": (apply_combined_effects, {'noise_strength': 50})
+    "combined_effects": (apply_combined_effects, {})    # Randomly apply 5 effects
 }
 
 for filename in os.listdir(input_dir):
