@@ -1,3 +1,5 @@
+
+
 class Discriminator(nn.Module):
     def __init__(self, output_channels):
         super(Discriminator, self).__init__()
